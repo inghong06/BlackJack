@@ -306,14 +306,27 @@ def summary(iteration, player_data, dealer_data):
 
     dealer_data.dealer_summary(player_num)
 
+def reshuffle(deck):
+    deck_count = len(deck)
+    shuffle_treshold = 70
+    if deck_count <= shuffle_treshold:
+        print("Time to reshuffle deck")
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6
+        print("Deck reshuffled")
+        random.shuffle(deck)
+    else:
+        pass
+
+    return deck
+
+
 def game():
     z = 0
+    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6
     while z < iteration:
         z += 1
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6 #6 decks
         print("Round", z, "\n")
-        random.shuffle(deck)
-        print("Deck shuffled\n")
+        deck = reshuffle(deck)
         deal(dealer_data, player_data, deck)
         display_player_info(player_data)
         display_dealer_info(dealer_data)
