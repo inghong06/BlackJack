@@ -1,8 +1,7 @@
 import random
 
 deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6
-player_num = 4
-iteration = 10000
+
 
 class PlayerProfile:
     def __init__(self, name):
@@ -43,7 +42,7 @@ class PlayerProfile:
         print("Loses:", self.lose)
         print("Draws:", iteration - self.win - self.lose)
         print("Games played:", self.games)
-        print("Winnings:", self.winnings)
+        print("Winnings:", self.cash)
         print("Win rate:", str(win_rate) + "%")
         print("Lose rate:", str(lose_rate) + "%")
         print("Draw rate:", str(draw_rate) + "%")
@@ -63,7 +62,7 @@ class PlayerProfile:
         print("Loses:", self.lose)
         print("Draws:", dealer_draw)
         print("Games played:", self.games)
-        print("Winnings:", self.winnings)
+        print("Winnings:", self.cash)
         print("Win rate:", str(dealer_win_rate) + "%")
         print("Lose rate:", str(dealer_lose_rate) + "%")
         print("Draw rate:", str(dealer_draw_rate) + "%")
@@ -250,6 +249,7 @@ def score(dealer_data, player_data):
                 if i.score == dealer_data.score:
                     i.games += 1
                     dealer_data.games += 1
+                    i.round_result = 0
                     print("It's a draw")
 
                 elif i.score > dealer_data.score:
@@ -310,7 +310,7 @@ def game():
     z = 0
     while z < iteration:
         z += 1
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6 #6 decks
         print("Round", z, "\n")
         random.shuffle(deck)
         print("Deck shuffled\n")
@@ -333,8 +333,10 @@ def game():
     summary(z, player_data, dealer_data)
 
 
+#variables
 
-
+player_num = 4
+iteration = 10000
 
 
 if __name__ == "__main__":
