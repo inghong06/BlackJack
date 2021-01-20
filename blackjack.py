@@ -199,11 +199,11 @@ def player_draw(dealer_data, player_data, deck):
             print(i.name + "'s turn")
             print("Current deck:", i.hand)
             print("Current score is", i.score, "\n")
-            if i.score >= 17:
+            if i.score >= player_card_treshold:
                 print(i.name, "will stay\n")
             else:
                 print(i.name, "will hit\n")
-                while i.score < 17:
+                while i.score < player_card_treshold:
                     new_card = hit(deck)
                     print(i.name, "got a", new_card, "\n")
                     i.hand.append(new_card)
@@ -322,38 +322,39 @@ def reshuffle(deck):
 
 def game():
     z = 0
-    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6
+    deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4 * 6 #312 cards in a shoe of 6 decks
+    random.shuffle(deck) #shuffle deck before start of first game
     while z < iteration:
         z += 1
         print("Round", z, "\n")
-        deck = reshuffle(deck)
-        deal(dealer_data, player_data, deck)
+        deck = reshuffle(deck) # reshuffles deck when there is less than 70 cards left in the shoe
+        deal(dealer_data, player_data, deck) # deal cards to all participants in a clockwise manner
         display_player_info(player_data)
         display_dealer_info(dealer_data)
-        blackjack_result = blackjack(dealer_data, player_data)
+        blackjack_result = blackjack(dealer_data, player_data) # Check for blackjacks. Player get 1.5x of wager if he/she gets a black jack. Dealer gets player's wager if black jack
 
-        if blackjack_result == 1:
+        if blackjack_result == 1: # when dealer gets a black jack, player will not draw cards
             print("Dealer's Black Jack ends this round\n")
             round_summary(player_data, dealer_data)
             display_cash(dealer_data, player_data)
             continue
         else:
-            player_draw(dealer_data, player_data, deck)
-            dealer_draw(dealer_data, deck)
-            score(dealer_data, player_data)
-            round_summary(player_data, dealer_data)
-            display_cash(dealer_data, player_data)
+            player_draw(dealer_data, player_data, deck) # player draw cards one at a time
+            dealer_draw(dealer_data, deck) # dealer draw card if score is less than 17
+            score(dealer_data, player_data) # compare dealer score and player score
+            round_summary(player_data, dealer_data) # display the win/loss of player/dealer
+            display_cash(dealer_data, player_data) # display latest cash balance of player/dealer
     summary(z, player_data, dealer_data)
 
 
 #variables
-
 player_num = 4
-iteration = 10000
+iteration = 10
+player_card_treshold = 17 # the score where player will stop drawing card
 
 
 if __name__ == "__main__":
-    player_list = participants(player_num)
-    player_data = set_player_profile(player_list)
-    dealer_data = set_dealer_profile()
+    player_list = participants(player_num) # return a list of player names e.g. [Player 1, Player 2, Player 3 .. Player n]
+    player_data = set_player_profile(player_list) # Create class that stores Player data e.g. (number of wins, lose, draws etc)
+    dealer_data = set_dealer_profile() # Create class to store dealer data
     game()
